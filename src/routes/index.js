@@ -3,7 +3,7 @@ let router = express.Router();
 
 // rutas de página web
 router.get("/", function(req, res){
-    res.send("Hola");
+    res.send("Saludos Humanos!");
 })
 
 router.get("/acercade", function(req, res){
