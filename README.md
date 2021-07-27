@@ -1,20 +1,20 @@
 # Configuración Proyecto de Node.js
 
-## Instalar las dependencias del proyecto
+## 1. Instalar las dependencias del proyecto
 ```
 npm install
 ```
 
-## Levantar el servidor de desarrollo
+## 2. Levantar el servidor de desarrollo
 ```
 npm run dev
 ```
-## Preparar para production (build - transpilar)
+## 3. Preparar para production (build - transpilar)
 ```
 npm run build
 ```
 
-## Levantar el servidor en production
+## 4. Levantar el servidor en production
 ```
 npm start
 ```
