@@ -14,6 +14,8 @@ app.set("puerto", PORT)
 // archivos staticos (css, js, img)
 
 // configurar el motor de plantillas
+app.set('view engine', 'ejs')
+app.set('views', './src/views')
 
 // configurar peticiones del cliente (req.body)
 
