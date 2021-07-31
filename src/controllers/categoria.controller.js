@@ -12,7 +12,7 @@ export const listar = async (req, res) => {
         console.log(res)
 
     }catch(error){
-        console.lof(QueryError)
+        console.log(error)
     }
     // select * from categorias
     res.render("admin/categoria/lista")

@@ -1,17 +1,17 @@
 
 export const inicio = function(req, res){
     // res.send("Saludos Humanos!");
-    res.render("index")
+    res.render("index", {layout: 'layout-pagina'})
 }
 
 export const nosotros = function(req, res){
     // res.send("Acerca de Nosotros");
-    res.render("nosotros")
+    res.render("nosotros", {layout: 'layout-pagina'})
 }
 
 export const ingresar = function(req, res){
     // res.send("Inicio de Sesion")
-    res.render("login")
+    res.render("login", {layout: 'layout-pagina'})
 }
 
 /*
