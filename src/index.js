@@ -24,6 +24,11 @@ app.set('layout', 'layouts/layout');
 app.set('views', './src/views')
 
 // configurar peticiones del cliente (req.body)
+// parse application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(express.json())
 
 // rutas
 app.use("/", rutas)
