@@ -25,5 +25,9 @@ router.get("/admin/categoria/:id", categoriaController.mostrar)
 router.get("/admin/usuario", usuarioController.listar)
 router.get("/admin/usuario/nuevo", usuarioController.nuevo);
 router.post("/admin/usuario", usuarioController.guardar);
+router.get("/admin/usuario/:id/editar", usuarioController.editar);
+router.post("/admin/usuario/:id", usuarioController.modificar)
+
+router.get("/random", usuarioController.aleatorio);
 
 module.exports = router

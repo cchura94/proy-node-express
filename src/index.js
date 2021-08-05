@@ -6,8 +6,20 @@ import expressLayouts from 'express-ejs-layouts'
 // importar dependencias o modulos locales
 import rutas from "./routes"
 
+import session from "express-session"
+import flash from "connect-flash"
+
 // configurar paquetes
 let app = express()
+
+// config session
+app.use(session({
+	secret:'MI_CODIGO_SECRETO',
+	saveUninitialized: true,
+	resave: true
+}));
+// config flash
+app.use(flash());
 
 // declarar variables auxiliares
 const PORT = process.env.PORT || 3000
