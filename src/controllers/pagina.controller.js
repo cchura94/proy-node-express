@@ -11,7 +11,7 @@ export const nosotros = function(req, res){
 
 export const ingresar = function(req, res){
     // res.send("Inicio de Sesion")
-    res.render("login", {layout: 'layout-pagina'})
+    res.render("login", {layout: 'layout-pagina', mensaje: req.flash('mensaje')})
 }
 
 /*

@@ -10,7 +10,7 @@ export const listar = async (req, res) => {
 export const nuevo = async (req, res) => {
     
 
-    res.render("admin/usuario/nuevo.ejs", {mensaje: req.flash('mensaje')})
+    res.render("admin/usuario/nuevo", {mensaje: req.flash('mensaje')})
 }
 
 export const guardar = async (req, res) => {

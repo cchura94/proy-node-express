@@ -11,17 +11,20 @@ export const login = async (req, res) => {
     let usuario = await models.Usuario.findOne({where: {email: correo}})
     
     if(usuario === null){
-        console.log("El Usuario no existe en la BD")
+        req.flash('mensaje', 'El Usuario no existe en la BD');
         res.redirect("/login")
     }else{
         // comparar si el hash es igual a la clave del cliente
         let result = await bcrypt.compare(clave, usuario.password)
-        
+        console.log(result)
         if(result){
+            // crear session
+            req.session.user = correo;
+            req.session.admin = true;            
 
             res.redirect("/admin/categoria")
         }else{
-
+            req.flash('mensaje', 'Contraseña Incorrecta');
             res.redirect("/login")
         }
     }

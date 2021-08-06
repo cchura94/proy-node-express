@@ -1,6 +1,8 @@
 import express from "express"
 let router = express.Router();
 
+import * as authMiddleware from "./../middlewares/auth.middleware"
+
 import * as paginaController from "./../controllers/pagina.controller"
 import * as categoriaController from "./../controllers/categoria.controller"
 import * as authController from "./../controllers/auth.controller"
@@ -16,17 +18,18 @@ router.get('/login', paginaController.ingresar);
 
 // rutas de Auth
 router.post("/auth/login", authController.login);
-router.post("/registro", authController.registro);
+router.post("/registro", authMiddleware.estaLogueado, authController.registro);
 // rutas de administración
 // categoria
-router.get("/admin/categoria", categoriaController.listar)
-router.get("/admin/categoria/:id", categoriaController.mostrar)
+router.get("/admin/categoria", authMiddleware.estaLogueado,categoriaController.listar)
+router.get("/admin/categoria/:id", authMiddleware.estaLogueado,categoriaController.mostrar)
+router.post("/admin/categoria", authMiddleware.estaLogueado,categoriaController.guardar)
 // usuario
-router.get("/admin/usuario", usuarioController.listar)
-router.get("/admin/usuario/nuevo", usuarioController.nuevo);
-router.post("/admin/usuario", usuarioController.guardar);
-router.get("/admin/usuario/:id/editar", usuarioController.editar);
-router.post("/admin/usuario/:id", usuarioController.modificar)
+router.get("/admin/usuario", authMiddleware.estaLogueado, usuarioController.listar)
+router.get("/admin/usuario/nuevo", authMiddleware.estaLogueado,usuarioController.nuevo);
+router.post("/admin/usuario", authMiddleware.estaLogueado, usuarioController.guardar);
+router.get("/admin/usuario/:id/editar", authMiddleware.estaLogueado, usuarioController.editar);
+router.post("/admin/usuario/:id", authMiddleware.estaLogueado, usuarioController.modificar)
 
 router.get("/random", usuarioController.aleatorio);
 

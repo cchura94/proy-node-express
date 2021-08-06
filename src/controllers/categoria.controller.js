@@ -8,14 +8,14 @@ export const listar = async (req, res) => {
     */
     // async/await
     try{
-        let res = await models.Categoria.findAll()
-        console.log(res)
+        let datos = await models.Categoria.findAll()
+        console.log(datos)
+        // select * from categorias
+        res.render("admin/categoria/lista", {datos: datos, mensaje: req.flash('mensaje')})
 
     }catch(error){
         console.log(error)
     }
-    // select * from categorias
-    res.render("admin/categoria/lista")
 }
 
 export const mostrar = (req, res) => {
@@ -34,6 +34,7 @@ export const guardar = async (req, res) => {
     try{
         let datos = req.body
         await models.Categoria.create(datos)
+        res.redirect("/admin/categoria");
     }catch(error){
         console.log(error)
     }    

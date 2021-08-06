@@ -13,10 +13,14 @@ import flash from "connect-flash"
 let app = express()
 
 // config session
+
 app.use(session({
 	secret:'MI_CODIGO_SECRETO',
 	saveUninitialized: true,
-	resave: true
+	resave: true,
+	cookie: {
+		maxAge: 60000*60
+	}
 }));
 // config flash
 app.use(flash());
