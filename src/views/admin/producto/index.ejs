@@ -1,0 +1,90 @@
+<div id="app">
+    <h1>Productos</h1>
+    <h1>{{ titulo }}</h1>
+    <p>{{ lista_productos }}</p>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Nuevo Producto
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Nuevo Producto</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <label for="">Ingrese Nombre:</label>
+          <input type="text" class="form-control" v-model="producto.nombre" required>
+          <label for="">Ingrese Precio:</label>
+          <input type="number" step="0.01" class="form-control" v-model="producto.precio">
+          <label for="">Ingrese Cantidad:</label>
+          <input type="number" class="form-control" v-model="producto.cantidad">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" @click="guardarProducto()" data-dismiss="modal">Guardar Productos</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <table class="table">
+        <tr>
+            <td>ID</td>
+            <td>NOMBRE</td>
+            <td>PRECIO</td>
+            <td>STOCK</td>
+            <td>SUB T.</td>
+            <td>ACCIONES</td>
+        </tr>
+        <tr v-for="prod in lista_productos">
+            <td></td>
+            <td>{{ prod.nombre }}</td>
+            <td>{{ prod.precio }}</td>
+            <td>{{ prod.cantidad }}</td>
+            <td>{{ prod.precio * prod.cantidad }}</td>
+            <td></td>
+        </tr>
+
+    </table>
+
+
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script>
+    let app = new Vue({
+        // identificar
+        el: "#app",
+        // data
+        data(){
+            return {
+                titulo: "Lista de Productos",
+                lista_productos: [
+                    {nombre: "Silla", precio: 110, cantidad: 45},
+                    {nombre: "Mesa", precio: 360, cantidad: 15},
+                    {nombre: "Escritorio", precio: 510, cantidad: 6},
+                ],
+                producto: {nombre: "", precio: 0, cantidad: 0}
+            }
+        },
+        // mounted
+        // created
+        // methods
+        methods:{
+            guardarProducto(){
+                this.lista_productos.push(this.producto);
+                this.producto = {nombre: "", precio: 0, cantidad: 0}
+            }
+        }
+        // computed        
+    })
+</script>

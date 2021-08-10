@@ -2,7 +2,7 @@
   "development": {
     "username": "postgres",
     "password": "postgresql",
-    "database": "node-test",
+    "database": "productos-node",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },

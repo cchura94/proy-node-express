@@ -74,6 +74,20 @@ export const modificar = async (req, res) => {
     }
 }
 
+export const eliminar = async function(req, res) {
+
+    let id = req.params.id;
+
+    await models.Usuario.destroy({
+        where: {
+          id: id
+        }
+      });
+
+    req.flash('mensaje', 'Usuario Eliminado');
+    res.redirect("/admin/usuario");
+}
+
 export const aleatorio = async function(req, res) {
     let id_max = await models.Usuario.max('id'); // 40
     console.log(id_max);
