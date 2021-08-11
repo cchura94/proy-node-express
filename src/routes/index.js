@@ -9,6 +9,10 @@ import * as authController from "./../controllers/auth.controller"
 import * as usuarioController from "./../controllers/usuario.controller"
 import * as prodController from "./../controllers/producto.controller"
 
+// para subir imagenes o documentos
+import multer from 'multer'
+const upload = multer({ dest: 'uploads/' })
+
 /*
 import PaginaController from "../controllers/pagina.controller"; "./../controllers/pagina.controller"
 let pc = new PaginaController
@@ -37,6 +41,12 @@ router.post("/admin/usuario/:id/eliminar", authMiddleware.estaLogueado, usuarioC
 router.get("/random", usuarioController.aleatorio);
 
 // producto
-router.get("/admin/producto", authMiddleware.estaLogueado, prodController.listarProd);
+router.get("/admin/producto", authMiddleware.estaLogueado, prodController.index);
+
+// End Points api rest
+router.get("/api/producto", authMiddleware.estaLogueado, prodController.lista);
+router.post("/api/producto", authMiddleware.estaLogueado, upload.single('imagen'), prodController.guardar);
+router.put("/api/producto/:id", authMiddleware.estaLogueado, prodController.modificar);
+router.delete("/api/producto/:id", authMiddleware.estaLogueado, prodController.eliminar);
 
 module.exports = router

@@ -1,7 +1,6 @@
 <div id="app">
     <h1>Productos</h1>
     <h1>{{ titulo }}</h1>
-    <p>{{ lista_productos }}</p>
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -24,7 +23,15 @@
           <label for="">Ingrese Precio:</label>
           <input type="number" step="0.01" class="form-control" v-model="producto.precio">
           <label for="">Ingrese Cantidad:</label>
-          <input type="number" class="form-control" v-model="producto.cantidad">
+          <input type="number" class="form-control" v-model="producto.stock">
+          <label for="">Ingrese descripción:</label>
+          <textarea v-model="producto.descripcion" class="form-control"></textarea>
+          <label for="">Seleccionar Categoria:</label>
+          <select v-model="producto.categoriaId">
+            <option value="1">Ropa</option>
+          </select>
+          <input type="file" @change="onImagenSeleccionada">
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -44,21 +51,63 @@
             <td>SUB T.</td>
             <td>ACCIONES</td>
         </tr>
-        <tr v-for="prod in lista_productos">
-            <td></td>
+        <tr v-for="(prod, index) in lista_productos">
+            <td>{{ prod.id }}</td>
             <td>{{ prod.nombre }}</td>
             <td>{{ prod.precio }}</td>
-            <td>{{ prod.cantidad }}</td>
-            <td>{{ prod.precio * prod.cantidad }}</td>
-            <td></td>
+            <td>{{ prod.stock }}</td>
+            <td>{{ prod.precio * prod.stock }}</td>
+            <td>
+              
+              <!-- Button trigger modal -->
+<button type="button" class="btn btn-warning" data-toggle="modal" :data-target="`#Modal${index}`" @click="editar(prod)">
+  Editar
+</button>
+
+<!-- Modal -->
+<div class="modal fade" :id="`Modal${index}`" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar Producto</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label for="">Ingrese Nombre:</label>
+        <input type="text" class="form-control" v-model="producto.nombre" required>
+        <label for="">Ingrese Precio:</label>
+        <input type="number" step="0.01" class="form-control" v-model="producto.precio">
+        <label for="">Ingrese Cantidad:</label>
+        <input type="number" class="form-control" v-model="producto.stock">
+        <label for="">Ingrese descripción:</label>
+        <textarea v-model="producto.descripcion" class="form-control"></textarea>
+        <label for="">Seleccionar Categoria:</label>
+        <select v-model="producto.categoriaId">
+          <option value="1">Ropa</option>
+        </select>
+        <input type="file">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" @click="modificarProducto()" data-dismiss="modal">Modificar Productos</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+            </td>
         </tr>
 
     </table>
 
 
-
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 <script>
     let app = new Vue({
@@ -69,20 +118,62 @@
             return {
                 titulo: "Lista de Productos",
                 lista_productos: [
-                    {nombre: "Silla", precio: 110, cantidad: 45},
+              /*      {nombre: "Silla", precio: 110, cantidad: 45},
                     {nombre: "Mesa", precio: 360, cantidad: 15},
                     {nombre: "Escritorio", precio: 510, cantidad: 6},
-                ],
-                producto: {nombre: "", precio: 0, cantidad: 0}
+            */],
+                producto: {
+                  id: 0,
+                  nombre: "", 
+                  precio: 0, 
+                  stock: 0,
+                  descripcion: "",
+                  categoriaId: 1,
+                  imagen: ''
+                },
+                url_base: '//127.0.0.1:3000/api'
             }
         },
         // mounted
+        async mounted(){
+          console.log("*****: MOUNTED")
+          try{
+            let {data} = await axios.get(`${this.url_base}/producto`);
+            console.log(data)
+            this.lista_productos = data
+          }catch(error){
+            console.log(error)
+          }
+        },
         // created
         // methods
         methods:{
-            guardarProducto(){
+            async guardarProducto(){
+                let formdata = new FormData();
+                formdata.append("nombre", this.producto.nombre)
+                formdata.append("precio", this.producto.precio)
+                formdata.append("stock", this.producto.stock)
+                formdata.append("descripcion", this.producto.descripcion)
+                formdata.append("categoriaId", this.producto.categoriaId)
+                formdata.append("imagen", this.producto.imagen)
+
+                await axios.post(`${this.url_base}/producto`, formdata);
+
                 this.lista_productos.push(this.producto);
                 this.producto = {nombre: "", precio: 0, cantidad: 0}
+            },
+            editar(item_prod){
+              this.producto = item_prod
+            },
+            async modificarProducto(){
+              await axios.put(`${this.url_base}/producto/${this.producto.id}`, this.producto);
+
+              this.producto = {nombre: "", precio: 0, cantidad: 0}
+
+            },
+            onImagenSeleccionada(event){
+              this.producto.imagen = event.target.files[0];
+              console.log(this.producto.imagen)
             }
         }
         // computed        
