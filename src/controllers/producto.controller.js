@@ -12,9 +12,12 @@ export const lista = async (req, res) => {
 
 export const guardar = async (req, res) => {
     try{
-        console.log(req.file);
-        
         let datos = req.body
+
+        if(req.file){
+            datos.imagen = req.file.filename
+        }
+        
         await models.Producto.create(datos)
         res.json({mensaje: 'Producto Registrado', error: false})
     }catch(error){
@@ -27,6 +30,10 @@ export const modificar = async (req, res) => {
     try{
         let id = req.params.id
         let datos = req.body
+
+         if(req.file){
+            datos.imagen = req.file.filename
+        }
 
         await models.Producto.update(datos, {where: {id}})
         res.json({mensaje: 'Producto Modificado', error: false})

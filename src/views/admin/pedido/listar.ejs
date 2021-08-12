@@ -1,0 +1,16 @@
+<div id="app">
+    <h1>{{ titulo }}</h1>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script>
+    let app = new Vue({
+        el: "#app",
+        data(){
+            return {
+                titulo: "Lista de Pedidos"
+            }
+        }
+    })
+</script>

@@ -26,6 +26,8 @@
     <!-- bootstrap-daterangepicker -->
     <link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
+    <%-defineContent('css')%>
+
     <!-- Custom Theme Style -->
     <link href="/build/css/custom.min.css" rel="stylesheet">
   </head>
@@ -74,8 +76,7 @@
                   </li>
                   <li><a><i class="fa fa-desktop"></i> productos <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="/admin/producto">Lista Productos</a></li>
-                      <li><a href="/admin/pedido/nuevo">Nuevo Producto</a></li>
+                      <li><a href="/admin/producto">Gestión Productos</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-table"></i> Pedidos <span class="fa fa-chevron-down"></span></a>
@@ -290,6 +291,7 @@
     <script src="/vendors/moment/min/moment.min.js"></script>
     <script src="/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 
+    <%-defineContent('js')%>
     <!-- Custom Theme Scripts -->
     <script src="/build/js/custom.min.js"></script>
 	

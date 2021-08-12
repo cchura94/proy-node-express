@@ -8,10 +8,22 @@ import * as categoriaController from "./../controllers/categoria.controller"
 import * as authController from "./../controllers/auth.controller"
 import * as usuarioController from "./../controllers/usuario.controller"
 import * as prodController from "./../controllers/producto.controller"
+import * as pedController from "./../controllers/pedido.controller"
 
 // para subir imagenes o documentos
 import multer from 'multer'
-const upload = multer({ dest: 'uploads/' })
+// const upload = multer({ dest: 'uploads/' })
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './public/imagenes')
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+      cb(null, uniqueSuffix+'-'+file.originalname)
+    }
+  })
+  
+  const upload = multer({ storage: storage })
 
 /*
 import PaginaController from "../controllers/pagina.controller"; "./../controllers/pagina.controller"
@@ -30,6 +42,7 @@ router.post("/registro", authMiddleware.estaLogueado, authController.registro);
 router.get("/admin/categoria", authMiddleware.estaLogueado,categoriaController.listar)
 router.get("/admin/categoria/:id", authMiddleware.estaLogueado,categoriaController.mostrar)
 router.post("/admin/categoria", authMiddleware.estaLogueado,categoriaController.guardar)
+router.get("/api/categoria", authMiddleware.estaLogueado, categoriaController.apiListar);
 // usuario
 router.get("/admin/usuario", authMiddleware.estaLogueado, usuarioController.listar)
 router.get("/admin/usuario/nuevo", authMiddleware.estaLogueado,usuarioController.nuevo);
@@ -46,7 +59,11 @@ router.get("/admin/producto", authMiddleware.estaLogueado, prodController.index)
 // End Points api rest
 router.get("/api/producto", authMiddleware.estaLogueado, prodController.lista);
 router.post("/api/producto", authMiddleware.estaLogueado, upload.single('imagen'), prodController.guardar);
-router.put("/api/producto/:id", authMiddleware.estaLogueado, prodController.modificar);
+router.put("/api/producto/:id", authMiddleware.estaLogueado, upload.single('imagen'), prodController.modificar);
 router.delete("/api/producto/:id", authMiddleware.estaLogueado, prodController.eliminar);
+
+// Pedido
+router.get("/admin/pedido", authMiddleware.estaLogueado, pedController.index);
+router.get("/admin/pedido/nuevo", authMiddleware.estaLogueado, pedController.nuevo);
 
 module.exports = router

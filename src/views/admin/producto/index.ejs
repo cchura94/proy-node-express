@@ -1,6 +1,6 @@
 <div id="app">
-    <h1>Productos</h1>
     <h1>{{ titulo }}</h1>
+
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -27,8 +27,8 @@
           <label for="">Ingrese descripción:</label>
           <textarea v-model="producto.descripcion" class="form-control"></textarea>
           <label for="">Seleccionar Categoria:</label>
-          <select v-model="producto.categoriaId">
-            <option value="1">Ropa</option>
+          <select v-model="producto.categoriaId" class="form-control">
+            <option v-for="cat in lista_categorias" :value="cat.id">{{ cat.nombre }}</option>
           </select>
           <input type="file" @change="onImagenSeleccionada">
 
@@ -49,6 +49,7 @@
             <td>PRECIO</td>
             <td>STOCK</td>
             <td>SUB T.</td>
+            <td>IMAGEN</td>
             <td>ACCIONES</td>
         </tr>
         <tr v-for="(prod, index) in lista_productos">
@@ -57,6 +58,10 @@
             <td>{{ prod.precio }}</td>
             <td>{{ prod.stock }}</td>
             <td>{{ prod.precio * prod.stock }}</td>
+            <td>
+              <img v-if="prod.imagen" :src="`/imagenes/${prod.imagen}`" width="150px" height="80px" alt="">
+              <p v-if="!prod.imagen">Sin Imagen</p>
+            </td>
             <td>
               
               <!-- Button trigger modal -->
@@ -84,10 +89,13 @@
         <label for="">Ingrese descripción:</label>
         <textarea v-model="producto.descripcion" class="form-control"></textarea>
         <label for="">Seleccionar Categoria:</label>
-        <select v-model="producto.categoriaId">
-          <option value="1">Ropa</option>
+        <select v-model="producto.categoriaId" class="form-control">
+          <option v-for="cat in lista_categorias" :value="cat.id">{{ cat.nombre }}</option>
         </select>
-        <input type="file">
+        <img :src="`/imagenes/${prod.imagen}`" width="200px" alt="">
+        <label for="">Modificar Imagen:</label>
+        
+        <input type="file" @change="onImagenSeleccionada">
 
       </div>
       <div class="modal-footer">
@@ -131,23 +139,29 @@
                   categoriaId: 1,
                   imagen: ''
                 },
-                url_base: '//127.0.0.1:3000/api'
+                url_base: '//127.0.0.1:3000/api',
+                lista_categorias: []
             }
         },
         // mounted
         async mounted(){
           console.log("*****: MOUNTED")
-          try{
-            let {data} = await axios.get(`${this.url_base}/producto`);
-            console.log(data)
-            this.lista_productos = data
-          }catch(error){
-            console.log(error)
-          }
+         this.cargarProductos();
         },
         // created
         // methods
         methods:{
+          async cargarProductos(){
+            try{
+              let {data} = await axios.get(`${this.url_base}/producto`);
+              console.log(data)
+              let datos_categorias = await axios.get(`${this.url_base}/categoria`);
+              this.lista_categorias = datos_categorias.data
+              this.lista_productos = data
+            }catch(error){
+              console.log(error)
+            }
+          },
             async guardarProducto(){
                 let formdata = new FormData();
                 formdata.append("nombre", this.producto.nombre)
@@ -161,15 +175,26 @@
 
                 this.lista_productos.push(this.producto);
                 this.producto = {nombre: "", precio: 0, cantidad: 0}
-            },
+                this.cargarProductos();
+              },
             editar(item_prod){
               this.producto = item_prod
             },
             async modificarProducto(){
-              await axios.put(`${this.url_base}/producto/${this.producto.id}`, this.producto);
+
+                let formdata = new FormData();
+                formdata.append("nombre", this.producto.nombre)
+                formdata.append("precio", this.producto.precio)
+                formdata.append("stock", this.producto.stock)
+                formdata.append("descripcion", this.producto.descripcion)
+                formdata.append("categoriaId", this.producto.categoriaId)
+                formdata.append("imagen", this.producto.imagen)
+
+
+              await axios.put(`${this.url_base}/producto/${this.producto.id}`, formdata);
 
               this.producto = {nombre: "", precio: 0, cantidad: 0}
-
+              this.cargarProductos();
             },
             onImagenSeleccionada(event){
               this.producto.imagen = event.target.files[0];

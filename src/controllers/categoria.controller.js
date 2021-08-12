@@ -18,6 +18,17 @@ export const listar = async (req, res) => {
     }
 }
 
+export const apiListar = async (req, res) => {
+    
+    try{
+        let datos = await models.Categoria.findAll()
+        res.json(datos)
+    }catch(error){
+        console.log(error)
+    }
+}
+
+
 export const mostrar = (req, res) => {
     let id = req.params.id
     models.Categoria.findOne({
