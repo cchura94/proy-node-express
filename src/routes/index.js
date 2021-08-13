@@ -9,6 +9,7 @@ import * as authController from "./../controllers/auth.controller"
 import * as usuarioController from "./../controllers/usuario.controller"
 import * as prodController from "./../controllers/producto.controller"
 import * as pedController from "./../controllers/pedido.controller"
+import * as clieController from "./../controllers/cliente.controller"
 
 // para subir imagenes o documentos
 import multer from 'multer'
@@ -66,4 +67,6 @@ router.delete("/api/producto/:id", authMiddleware.estaLogueado, prodController.e
 router.get("/admin/pedido", authMiddleware.estaLogueado, pedController.index);
 router.get("/admin/pedido/nuevo", authMiddleware.estaLogueado, pedController.nuevo);
 
+// cliente
+router.post("/api/cliente", authMiddleware.estaLogueado, clieController.guardar)
 module.exports = router
