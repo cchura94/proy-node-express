@@ -66,7 +66,10 @@ router.delete("/api/producto/:id", authMiddleware.estaLogueado, prodController.e
 // Pedido
 router.get("/admin/pedido", authMiddleware.estaLogueado, pedController.index);
 router.get("/admin/pedido/nuevo", authMiddleware.estaLogueado, pedController.nuevo);
-
+// End Point api rest
+router.post("/api/pedido", authMiddleware.estaLogueado, pedController.guardar);
+router.get("/api/pedido", authMiddleware.estaLogueado, pedController.listar);
+router.get("/api/pedido/:id", authMiddleware.estaLogueado, pedController.mostrar)
 // cliente
 router.post("/api/cliente", authMiddleware.estaLogueado, clieController.guardar)
 module.exports = router

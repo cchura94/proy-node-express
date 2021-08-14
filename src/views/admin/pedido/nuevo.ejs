@@ -161,13 +161,15 @@
             let { data } = await axios.post(`http://127.0.0.1:3000/api/cliente`, this.cliente);
             this.id_cliente = data.resp.id
           },
-          realizarPedido(){
+          async realizarPedido(){
             let pedido = {
               carrito: this.carrito,
               cliente: this.id_cliente,
               monto_total: this.monto_total
             }
             console.log(pedido)
+            let { data } = await axios.post(`http://127.0.0.1:3000/api/pedido`, pedido);
+            
 
           }
         }
